@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.PROD_USER }}
           password: ${{ secrets.PROD_PASSWORD }}
           source: |
-            dist/webapp/
+            dist/webapp/**
             ecosystem.config.js
           target: /home/webapp
           strip_components: 0
