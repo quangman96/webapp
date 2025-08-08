@@ -24,6 +24,9 @@ jobs:
       - name: 🏗️ Build Angular SSR
         run: npm run build
 
+      - name: List build files
+        run: ls -R dist/
+
       - name: 📂 Copy build to server via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
