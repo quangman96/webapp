@@ -1,7 +1,7 @@
 module.exports = {
   apps: {
     name: 'angular-ssr',
-    script: 'dist/webapp/server/server.mjs',
+    script: 'server/server.mjs',
     instances: 1,
     autorestart: true,
     watch: false,

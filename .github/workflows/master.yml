@@ -31,10 +31,11 @@ jobs:
         env:
           SSH_PASSWORD: ${{ secrets.PROD_PASSWORD }}
         run: |
-          sudo apt-get update
           sudo apt-get install -y sshpass rsync
-          sshpass -p "$SSH_PASSWORD" rsync -avz -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.PROD_PORT }}" \
-            dist/webapp/ ecosystem.config.js ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/webapp/
+          sshpass -p "$SSH_PASSWORD" rsync -avz \
+            -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.PROD_PORT }}" \
+            dist/webapp/ ecosystem.config.js \
+            ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/webapp/
 
       - name: 🚀 SSH & Restart PM2
         uses: appleboy/ssh-action@v1.0.3
