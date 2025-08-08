@@ -27,18 +27,14 @@ jobs:
       - name: List build files
         run: ls -R dist/
 
-      - name: 📂 Copy build to server via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          port: ${{ secrets.PROD_PORT }}
-          username: ${{ secrets.PROD_USER }}
-          password: ${{ secrets.PROD_PASSWORD }}
-          source: |
-            dist/webapp/**
-            ecosystem.config.js
-          target: /home/webapp
-          strip_components: 0
+      - name: 📂 Copy build to server via rsync
+        env:
+          SSH_PASSWORD: ${{ secrets.PROD_PASSWORD }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass rsync
+          sshpass -p "$SSH_PASSWORD" rsync -avz -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.PROD_PORT }}" \
+            dist/webapp/ ecosystem.config.js ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/webapp/
 
       - name: 🚀 SSH & Restart PM2
         uses: appleboy/ssh-action@v1.0.3
